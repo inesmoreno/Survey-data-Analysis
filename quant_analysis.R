@@ -16,10 +16,10 @@ dd$PCA3 = as.numeric(factor(d$TIN.SOCI + d$TIN.ENV + d$TUNGSTEN.SOCI + d$TUNGSTE
  d$COLTAN.ENV))
 
 # merge education levels 0 and 1 together since there were only 1 in each
-dd$age = factor(d$AGE.GROUP)
+dd$age = factor(d$AGE.GROUP, levels = c(5,0,1,2,3,4))
 dd$educ = d$EDUCATION
 dd$educ[dd$educ==0] <- 1
-dd$educ <- as.factor(dd$educ)
+dd$educ <- factor(dd$educ, levels = c(4,1,2,3))
 
 # dependent variables
 dd$hardware = d$Hardware # nominal
@@ -93,6 +93,13 @@ summary(f2_brms)
 f3_brms = brm(PCA3 ~ age + educ + hardware + systems + networks + software + theory + math + info_syst + security + hcc + methodologies + social_prof  + nowhere + survey + news + social + friends + documentaries + church + course + organisation + conference,
   family=cumulative('logit'),data=dd,cores=4,chains=4)
 summary(f3_brms)
+
+# what about treating age and education as monotonic ordinal variables?
+f3_brms_mo = brm(PCA3 ~ mo(as.numeric(as.character(age))) + mo(as.numeric(as.character(educ))) + hardware + systems + networks + software + theory + math + info_syst + security + hcc + methodologies + social_prof  + nowhere + survey + news + social + friends + documentaries + church + course + organisation + conference,
+  family=cumulative('logit'),data=dd,cores=4,chains=4)
+summary(f3_brms_mo)
+# the "moas.numericas.characterage" and "moas.numericas.charactereduc" parameters
+# give 'overall' effects of age and education
 
 # plot f1
 
