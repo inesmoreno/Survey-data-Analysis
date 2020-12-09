@@ -82,9 +82,19 @@ f1_brms = brm(PCA1 ~ age + educ + hardware + systems + networks + software + the
   family=cumulative('logit'),data=dd,cores=4,chains=4)
 summary(f1_brms)
 
+f1_brms_mo = brm(PCA1 ~ mo(as.numeric(as.character(age))) + mo(as.numeric(as.character(educ))) + hardware + systems + networks + software + theory + math + info_syst + security + hcc + methodologies + social_prof  + nowhere + survey + news + social + friends + documentaries + church + course + organisation + conference,
+  family=cumulative('logit'),data=dd,cores=4,chains=4)
+summary(f1_brms_mo)
+
+
 f2_brms = brm(PCA2 ~ age + educ + hardware + systems + networks + software + theory + math + info_syst + security + hcc + methodologies + social_prof  + nowhere + survey + news + social + friends + documentaries + church + course + organisation + conference,
   family=cumulative('logit'),data=dd,cores=4,chains=4)
 summary(f2_brms)
+
+f2_brms_mo = brm(PCA2 ~ mo(as.numeric(as.character(age))) + mo(as.numeric(as.character(educ))) + hardware + systems + networks + software + theory + math + info_syst + security + hcc + methodologies + social_prof  + nowhere + survey + news + social + friends + documentaries + church + course + organisation + conference,
+  family=cumulative('logit'),data=dd,cores=4,chains=4)
+summary(f2_brms_mo)
+
 
 (ctable2 <- fixef(f2_brms))
 #p <- pnorm(abs(ctable2[, "t value"]), lower.tail = FALSE) * 2
