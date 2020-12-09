@@ -12,14 +12,14 @@ png("age-groups.png")
 par(mar=c(1.1, 1.1, 1.1, 1.1), xpd=TRUE)
 a = table(d$AGE.GROUP)
 # https://bookdown.org/ndphillips/YaRrr/plot-margins.html
-a_lb = c("18-25", "26-35", "36-45", "46-55", "56-65", "65+")
+a_lb = c("18-25", "26-35", "36-45", "56-65", "66+")
 pie(a, labels=a_lb, main="Age breakdown of participants", col=hues)
 
 # Education
 png("education.png")
 par(mar=c(1.1, 4.1, 4.1, 12.1), xpd=TRUE)
 e = table(d$EDUCATION)
-e_lb = c("Secondary School", "CEGEP or Community College", "Certification programme", "Bachelor's", "Master's", "Doctorate")
+e_lb = c("Secondary School", "Certification programme", "Bachelor's", "Master's", "Doctorate")
 pie(e, labels=e_lb, main="Education breakdown of participants", col=hues)
 
 # Specialty
