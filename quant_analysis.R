@@ -16,10 +16,10 @@ dd$PCA3 = as.numeric(factor(d$TIN.SOCI + d$TIN.ENV + d$TUNGSTEN.SOCI + d$TUNGSTE
  d$COLTAN.ENV))
 
 # merge education levels 0 and 1 together since there were only 1 in each
-dd$age = factor(d$AGE.GROUP, levels = c(5,0,1,2,3,4))
+dd$age = factor(d$AGE.GROUP)
 dd$educ = d$EDUCATION
 dd$educ[dd$educ==0] <- 1
-dd$educ <- factor(dd$educ, levels = c(4,1,2,3))
+dd$educ <- factor(dd$educ)
 
 # dependent variables
 dd$hardware = d$Hardware # nominal
@@ -78,20 +78,20 @@ library(brms)
 
 # look for credible interval doesn't cross 0
 
-f1_brms = brm(PCA1 ~ age + educ + hardware + systems + networks + software + theory + math + info_syst + security + hcc + methodologies + social_prof  + nowhere + survey + news + social + friends + documentaries + church + course + organisation + conference,
+f1_brms = brm(PCA1 ~ relevel(age,'5') + relevel(educ,'4') + hardware + systems + networks + software + theory + math + info_syst + security + hcc + methodologies + social_prof  + nowhere + survey + news + social + friends + documentaries + church + course + organisation + conference,
   family=cumulative('logit'),data=dd,cores=4,chains=4)
 summary(f1_brms)
 
-f1_brms_mo = brm(PCA1 ~ mo(as.numeric(as.character(age))) + mo(as.numeric(as.character(educ))) + hardware + systems + networks + software + theory + math + info_syst + security + hcc + methodologies + social_prof  + nowhere + survey + news + social + friends + documentaries + church + course + organisation + conference,
+f1_brms_mo = brm(PCA1 ~ mo(as.numeric(age)) + mo(as.numeric(educ)) + hardware + systems + networks + software + theory + math + info_syst + security + hcc + methodologies + social_prof  + nowhere + survey + news + social + friends + documentaries + church + course + organisation + conference,
   family=cumulative('logit'),data=dd,cores=4,chains=4)
 summary(f1_brms_mo)
 
 
-f2_brms = brm(PCA2 ~ age + educ + hardware + systems + networks + software + theory + math + info_syst + security + hcc + methodologies + social_prof  + nowhere + survey + news + social + friends + documentaries + church + course + organisation + conference,
+f2_brms = brm(PCA2 ~ relevel(age,'5') + relevel(educ,'4') + hardware + systems + networks + software + theory + math + info_syst + security + hcc + methodologies + social_prof  + nowhere + survey + news + social + friends + documentaries + church + course + organisation + conference,
   family=cumulative('logit'),data=dd,cores=4,chains=4)
 summary(f2_brms)
 
-f2_brms_mo = brm(PCA2 ~ mo(as.numeric(as.character(age))) + mo(as.numeric(as.character(educ))) + hardware + systems + networks + software + theory + math + info_syst + security + hcc + methodologies + social_prof  + nowhere + survey + news + social + friends + documentaries + church + course + organisation + conference,
+f2_brms_mo = brm(PCA2 ~ mo(as.numeric(age)) + mo(as.numeric(educ)) + hardware + systems + networks + software + theory + math + info_syst + security + hcc + methodologies + social_prof  + nowhere + survey + news + social + friends + documentaries + church + course + organisation + conference,
   family=cumulative('logit'),data=dd,cores=4,chains=4)
 summary(f2_brms_mo)
 
@@ -100,12 +100,12 @@ summary(f2_brms_mo)
 #p <- pnorm(abs(ctable2[, "t value"]), lower.tail = FALSE) * 2
 #(ctable2 <- cbind(ctable2, "p value" = p))
 
-f3_brms = brm(PCA3 ~ age + educ + hardware + systems + networks + software + theory + math + info_syst + security + hcc + methodologies + social_prof  + nowhere + survey + news + social + friends + documentaries + church + course + organisation + conference,
+f3_brms = brm(PCA3 ~ relevel(age,'5') + relevel(educ,'4') + hardware + systems + networks + software + theory + math + info_syst + security + hcc + methodologies + social_prof  + nowhere + survey + news + social + friends + documentaries + church + course + organisation + conference,
   family=cumulative('logit'),data=dd,cores=4,chains=4)
 summary(f3_brms)
 
 # what about treating age and education as monotonic ordinal variables?
-f3_brms_mo = brm(PCA3 ~ mo(as.numeric(as.character(age))) + mo(as.numeric(as.character(educ))) + hardware + systems + networks + software + theory + math + info_syst + security + hcc + methodologies + social_prof  + nowhere + survey + news + social + friends + documentaries + church + course + organisation + conference,
+f3_brms_mo = brm(PCA3 ~ mo(as.numeric(age)) + mo(as.numeric(educ)) + hardware + systems + networks + software + theory + math + info_syst + security + hcc + methodologies + social_prof  + nowhere + survey + news + social + friends + documentaries + church + course + organisation + conference,
   family=cumulative('logit'),data=dd,cores=4,chains=4)
 summary(f3_brms_mo)
 # the "moas.numericas.characterage" and "moas.numericas.charactereduc" parameters
