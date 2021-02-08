@@ -118,7 +118,7 @@ f2_brms_mo <- brm(
     mo(as.numeric(age)) + mo(as.numeric(educ)) + occ + 
     hardware + systems + networks + software + theory + math + info_syst + security + hcc + methodologies + applied + social_prof  + 
     nowhere + survey + news + social + friends + documentaries + church + course + organisation + conference,
-  family=cumulative('logit'),data=dd,cores=4,chains=4)
+  family=c umulative('logit'),data=dd,cores=4,chains=4)
 summary(f2_brms_mo)
 
 f3_brms_mo <- brm(
@@ -133,36 +133,59 @@ summary(f3_brms_mo)
 
 
 # Plot results (confidence intervals)
-ciplot <- function(m){
+ciplot <- function(m,main=NULL,intercepts=FALSE){
+    # better margins
+    par(mar=c(3, 8, 4, 2) + .1)
+
     fe <- fixef(m)
+    if(!intercepts){
+      int_rows <- grep('Intercept\\[\\d+\\]',rownames(fe))
+      fe <- fe[-int_rows,]
+    }
     xlim <- range(fe[,-2])
     names <- row.names(fe)
     
-    plot(NA,xlim=xlim,ylim=c(1,nrow(fe)),xlab='',ylab='',yaxt="n")
+    if(is.null(main)){
+      main = title(paste('95% Credible Intervals for ', deparse(substitute(m))))
+    }
+
+    plot(NA,xlim=xlim,ylim=c(1,nrow(fe)),xlab='',ylab='',yaxt="n",main=main)
     for(i in 1:nrow(fe)){
-        lines(fe[i,3:4],c(i,i),lwd=3,lend='butt',col='#555555')
-        points(fe[i,1],i,pch=18,cex=2)
-        text(x=fe[i,4]+1, y=i, names[i], cex=0.5, col='blue')
+        lines(fe[i,3:4],c(i,i),lwd=2,lend='butt',col='black')
+        points(fe[i,1],i,pch=18,cex=1)
+        #text(x=fe[i,4]+1, y=i, names[i], cex=0.5, col='blue')
         axis(2, at=i, labels=names[i], las=2, cex.axis=0.5)
     }
-    title(paste('95% Credible Intervals for ', deparse(substitute(m))))
     abline(v=0,lty=3)
 }
 
-png("f1_brms.png")
-ciplot(f1_brms)
+pdf('f1_brms.pdf',useDingbats=FALSE)
+#png("f1_brms.png",width=2000,height=2000,res=300)
+ciplot(f1_brms, main = '95% Credible Intervals for PCA1')
+dev.off()
 
-png("f2_brms.png")
-ciplot(f2_brms)
+pdf('f2_brms.pdf',useDingbats=FALSE)
+#png("f2_brms.png",width=2000,height=2000,res=300)
+ciplot(f2_brms, main = '95% Credible Intervals for PCA2')
+dev.off()
 
-png("f3_brms.png")
-ciplot(f3_brms)
+pdf('f3_brms.pdf',useDingbats=FALSE)
+#png("f3_brms.png",width=2000,height=2000,res=300)
+ciplot(f3_brms, main = '95% Credible Intervals for PCA3')
+dev.off()
 
-png("f1_brms_mo.png")
-ciplot(f1_brms_mo)
+pdf('f1_brms_mo.pdf',useDingbats=FALSE)
+#png("f1_brms_mo.png",width=2000,height=2000,res=300)
+ciplot(f1_brms_mo, main = '95% Credible Intervals for PCA1')
+dev.off()
 
-png("f2_brms_mo.png")
-ciplot(f2_brms_mo)
+pdf('f2_brms_mo.pdf',useDingbats=FALSE)
+#png("f2_brms_mo.png",width=2000,height=2000,res=300)
+ciplot(f2_brms_mo, main = '95% Credible Intervals for PCA2')
+dev.off()
 
-png("f3_brms_mo.png")
-ciplot(f3_brms_mo)
+pdf('f3_brms_mo.pdf',useDingbats=FALSE)
+#png("f3_brms_mo.png",width=2000,height=2000,res=300)
+ciplot(f3_brms_mo, main = '95% Credible Intervals for PCA3')
+dev.off()
+
